@@ -50,10 +50,12 @@
 
 	aliases {
 		serial0 = &uart0;
+		serial2 = &uart2;
+		ethernet0 = &emac;
 	};
 
 	chosen {
-		stdout-path = "serial0:115200n8";
+		stdout-path = "serial2:115200n8";
 	};
 
 	leds {
@@ -81,6 +83,19 @@
 	status = "okay";
 };
 
+&emac {
+	status = "okay";
+};
+
+&codec {
+	allwinner,audio-routing =
+		"Headphone", "HP",
+		"Headphone", "HPCOM",
+		"MIC1", "Mic",
+		"Mic",  "HBIAS";
+	status = "okay";
+};
+
 &mmc0 {
 	pinctrl-0 = <&mmc0_pins_a>;
 	pinctrl-names = "default";
@@ -88,6 +103,18 @@
 	bus-width = <4>;
 	vmmc-supply = <&reg_vcc3v3>;
 	status = "okay";
+};
+
+&spi0 {
+        status ="okay";
+
+        gd25q128:gd25q128@0 {
+                compatible = "jedec,spi-nor";
+                reg = <0x0>;
+                spi-max-frequency = <50000000>;
+                #address-cells = <1>;
+                #size-cells = <1>;
+        };
 };
 
 &i2c0 {
@@ -105,6 +132,12 @@
 
 &uart0 {
 	pinctrl-0 = <&uart0_pins_a>;
+	pinctrl-names = "default";
+	status = "okay";
+};
+
+&uart2 {
+	pinctrl-0 = <&uart2_pins_a>;
 	pinctrl-names = "default";
 	status = "okay";
 };
